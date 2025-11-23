@@ -44,10 +44,6 @@ const Settings = () => {
           onPress: async () => {
             try {
               await authClient.signOut();
-              // Better Auth + Expo Router se ocupă de obicei automat de redirect
-              // dacă folosești un AuthProvider care verifică sesiunea.
-              // Dacă nu, decomentează linia următoare:
-              router.replace("/(auth)/sign-in");
             } catch {
               Alert.alert("Error", "Failed to sign out.");
             }

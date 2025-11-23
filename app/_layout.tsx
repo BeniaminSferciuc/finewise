@@ -31,11 +31,11 @@ export default function Layout() {
   const inAuthGroup = segments[0] === "(auth)";
   const isIndexPage = segments.length === 0;
 
-  if (isAuthenticated) {
+  if (!!isAuthenticated === true) {
     if (isIndexPage || inAuthGroup) {
       return <Redirect href="/overview" />;
     }
-  } else {
+  } else if (!!isAuthenticated === false) {
     if (inDashboardGroup) {
       return <Redirect href="/sign-in" />;
     }
@@ -55,15 +55,17 @@ export default function Layout() {
   return (
     <SafeAreaProvider>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(dashboard)" />
+
         <Stack.Screen
           name="add-transaction"
           options={{
             presentation: "modal",
-            headerShown: false,
             animation: "slide_from_bottom",
           }}
         />
+
+        <Stack.Screen name="index" />
       </Stack>
     </SafeAreaProvider>
   );

@@ -1,4 +1,4 @@
-import { LinearGradient } from "expo-linear-gradient";
+import { THEME_COLOR } from "@/lib/constants";
 import { router } from "expo-router";
 import {
   ArrowUpRight,
@@ -113,7 +113,7 @@ export default function Index() {
             <Text className="text-[42px] font-bold text-black leading-[1.1] tracking-tight">
               Stop guessing
               {"\n"}where your
-              <Text className="text-indigo-600"> money goes.</Text>
+              <Text style={{ color: THEME_COLOR }}> money goes.</Text>
             </Text>
             <Text className="mt-4 text-lg font-medium leading-7 text-gray-500">
               Track every expense, analyze spending habits, and take full
@@ -125,16 +125,19 @@ export default function Index() {
             onPress={() => router.push("/sign-in")}
             activeOpacity={0.8}
             className="w-full"
+            style={{
+              backgroundColor: THEME_COLOR,
+              height: 64,
+              borderRadius: 200,
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "row",
+            }}
           >
-            <LinearGradient
-              colors={["#111827", "#000000"]}
-              className="h-16 rounded-[20px] flex-row items-center justify-center shadow-lg shadow-black/20"
-            >
-              <Text className="mr-2 text-lg font-bold text-white">
-                Start Tracking
-              </Text>
-              <TrendingUp size={20} color="white" />
-            </LinearGradient>
+            <Text className="mr-2 text-lg font-bold text-white">
+              Start Tracking
+            </Text>
+            <TrendingUp size={20} color="white" />
           </TouchableOpacity>
 
           <View className="flex-row items-center justify-center gap-6 mt-6">

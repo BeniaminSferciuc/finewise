@@ -1,5 +1,6 @@
 import DateTimePicker from "@react-native-community/datetimepicker"; // Asigură-te că instalezi pachetul
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
+
 import {
   Calendar as CalendarIcon,
   Check,
@@ -30,8 +31,6 @@ const INITIAL_CATEGORIES = [
 ];
 
 const AddTransactions = () => {
-  const router = useRouter();
-
   // --- STATE ---
   const [type, setType] = useState<"income" | "expense">("expense");
   const [amount, setAmount] = useState("");
@@ -59,8 +58,7 @@ const AddTransactions = () => {
       date: date.toISOString(),
     });
 
-    if (router.canGoBack()) router.back();
-    else router.replace("/overview");
+    router.back();
   };
 
   // Logică Calendar

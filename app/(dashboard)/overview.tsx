@@ -128,8 +128,17 @@ export default function HomeScreen() {
               colors={["#171717", "#262626"]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              className="justify-between p-6 shadow-lg shadow-black/20"
-              style={{ width: CARD_WIDTH, height: 210, borderRadius: 24 }}
+              style={{
+                width: CARD_WIDTH,
+                height: 210,
+                borderRadius: 24,
+                padding: 24,
+                justifyContent: "space-between",
+                shadowColor: "#000",
+                shadowOpacity: 0.2,
+                shadowRadius: 10,
+                shadowOffset: { width: 0, height: 4 },
+              }}
             >
               <View>
                 <View className="flex-row items-center mb-2">
@@ -183,8 +192,17 @@ export default function HomeScreen() {
               colors={["#007AFF", "#0055B3"]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              className="justify-between p-6 shadow-lg shadow-blue-500/20"
-              style={{ width: CARD_WIDTH, height: 210, borderRadius: 24 }}
+              style={{
+                width: CARD_WIDTH,
+                height: 210,
+                borderRadius: 24,
+                padding: 24,
+                justifyContent: "space-between",
+                shadowColor: "#000",
+                shadowOpacity: 0.2,
+                shadowRadius: 10,
+                shadowOffset: { width: 0, height: 4 },
+              }}
             >
               <View>
                 <View className="flex-row items-center justify-between">
@@ -211,8 +229,17 @@ export default function HomeScreen() {
               colors={["#FF9500", "#E08200"]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              className="justify-between p-6 shadow-lg shadow-orange-500/20"
-              style={{ width: CARD_WIDTH, height: 210, borderRadius: 24 }}
+              style={{
+                width: CARD_WIDTH,
+                height: 210,
+                borderRadius: 24,
+                padding: 24,
+                justifyContent: "space-between",
+                shadowColor: "#000",
+                shadowOpacity: 0.2,
+                shadowRadius: 10,
+                shadowOffset: { width: 0, height: 4 },
+              }}
             >
               <View>
                 <View className="flex-row items-center justify-between">

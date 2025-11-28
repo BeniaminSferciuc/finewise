@@ -126,7 +126,7 @@ export default function HomeScreen() {
           >
             {/* CARD 1: FINANCIAL OVERVIEW */}
             <LinearGradient
-              colors={["#171717", "#262626"]}
+              colors={[THEME_COLOR, "#262626"]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={{

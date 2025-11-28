@@ -23,7 +23,7 @@ export const renderItem: SectionListRenderItem<
 
   const isFirst = index === 0;
   const isLast = index === section.data.length - 1;
-  const containerClass = `bg-white px-4 py-4 flex-row items-center ${
+  const containerClass = `bg-white px-4 py-4 gap-3 flex-row items-center ${
     isFirst ? "rounded-t-[30px]" : ""
   } ${isLast ? "rounded-b-[30px] mb-4" : "border-b border-gray-100"}`;
 

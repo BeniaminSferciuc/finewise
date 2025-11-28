@@ -51,3 +51,13 @@ export const getDateRange = (year: number, monthIndex: number | null) => {
     end: format(endOfYear(date), "yyyy-MM-dd"),
   };
 };
+
+export const formatDate = (date: Date) => {
+  const today = new Date();
+  const isToday = date.toDateString() === today.toDateString();
+  const dateString = date.toLocaleDateString("ro-RO", {
+    month: "short",
+    day: "numeric",
+  });
+  return isToday ? `Azi, ${dateString}` : dateString;
+};

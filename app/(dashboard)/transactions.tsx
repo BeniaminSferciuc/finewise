@@ -1,16 +1,17 @@
 import { FilterSheet } from "@/components/filters-sheet";
 import { renderItem } from "@/components/render-item";
 import { renderSectionHeader } from "@/components/render-section-header";
-import { MONTHS } from "@/constants";
 import { authClient } from "@/lib/auth-client";
+import { THEME_COLOR } from "@/lib/constants";
 import { QUERYKEYS } from "@/lib/query-keys";
 import { supabase } from "@/lib/supabase";
 import { TransactionWithCategory } from "@/lib/types";
 import { getDateRange, groupTransactionsByDate } from "@/lib/utils";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
 
 import { FilterIcon } from "lucide-react-native";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   SectionList,
@@ -23,37 +24,31 @@ import { SafeAreaView } from "react-native-safe-area-context";
 type FilterType = "all" | "income" | "expense";
 
 const Transactions = () => {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
   const { data: session } = authClient.useSession();
   const currentYear = new Date().getFullYear();
 
-  // --- STATE ---
-  const [isFilterVisible, setIsFilterVisible] = useState(false);
-
   // Stare Activă (ce se vede in lista)
   const [activeYear, setActiveYear] = useState(currentYear);
-  const [activeMonth, setActiveMonth] = useState<number | null>(null);
   const [activeType, setActiveType] = useState<FilterType>("all");
 
   // Stare Temporară (ce modifici in modal inainte de Apply)
   const [tempYear, setTempYear] = useState(currentYear);
-  const [tempMonth, setTempMonth] = useState<number | null>(null);
   const [tempType, setTempType] = useState<FilterType>("all");
-
-  // Deschide modalul și sincronizează starea temporară cu cea activă
-  const openFilters = () => {
-    setTempYear(activeYear);
-    setTempMonth(activeMonth);
-    setTempType(activeType);
-    setIsFilterVisible(true);
-  };
 
   // Aplică filtrele
   const applyFilters = () => {
     setActiveYear(tempYear);
-    setActiveMonth(tempMonth);
     setActiveType(tempType);
-    setIsFilterVisible(false);
+    bottomSheetModalRef.current?.dismiss();
   };
+
+  const handlePresentModalPress = useCallback(() => {
+    setTempYear(activeYear);
+    setTempType(activeType);
+    bottomSheetModalRef.current?.present();
+  }, [activeType, activeYear]);
 
   // --- QUERIES ---
   const { data: availableYears = [currentYear] } = useQuery({
@@ -62,6 +57,7 @@ const Transactions = () => {
       const { data } = await supabase
         .from("transactions")
         .select("date")
+        .eq("user_id", session?.user.id ?? "")
         .order("date", { ascending: false });
       const uniqueYears = new Set<number>([currentYear]);
       data?.forEach((tx) => uniqueYears.add(new Date(tx.date).getFullYear()));
@@ -76,12 +72,13 @@ const Transactions = () => {
     isError,
     refetch,
   } = useQuery({
-    queryKey: [QUERYKEYS.TRANSACTIONS, activeYear, activeMonth, activeType],
+    queryKey: [QUERYKEYS.TRANSACTIONS, activeYear, activeType],
     queryFn: async () => {
-      const { start, end } = getDateRange(activeYear, activeMonth);
+      const { start, end } = getDateRange(activeYear);
       let query = supabase
         .from("transactions")
         .select("*, categories(*)")
+        .eq("user_id", session?.user.id ?? "")
         .order("date", { ascending: false })
         .gte("date", start)
         .lte("date", end);
@@ -101,8 +98,7 @@ const Transactions = () => {
   }, [rawTransactions]);
 
   // Verificăm dacă sunt filtre active pentru a colora butonul
-  const hasActiveFilters =
-    activeMonth !== null || activeType !== "all" || activeYear !== currentYear;
+  const hasActiveFilters = activeType !== "all" || activeYear !== currentYear;
 
   return (
     <SafeAreaView className="flex-1 bg-[#F2F2F7]" edges={["top"]}>
@@ -113,8 +109,7 @@ const Transactions = () => {
             Transactions
           </Text>
           <Text className="text-sm font-medium text-gray-500">
-            {activeYear} •{" "}
-            {activeMonth !== null ? MONTHS[activeMonth] : "All Year"}
+            {activeYear}
           </Text>
         </View>
       </View>
@@ -155,32 +150,28 @@ const Transactions = () => {
         />
       )}
       <TouchableOpacity
-        onPress={openFilters}
-        className={`size-16  rounded-full items-center justify-center absolute right-4 bottom-4 border ${
-          hasActiveFilters
-            ? "bg-black border-black"
-            : "bg-white border-gray-200"
-        }`}
+        onPress={handlePresentModalPress}
+        className="size-16 rounded-full items-center justify-center absolute right-6 bottom-4 border"
+        style={{
+          backgroundColor: hasActiveFilters ? THEME_COLOR : "white",
+          borderColor: hasActiveFilters ? THEME_COLOR : "#E5E5EA",
+        }}
       >
         <FilterIcon
           size={20}
-          color={hasActiveFilters ? "white" : "black"}
+          color={hasActiveFilters ? "white" : THEME_COLOR}
           fill={hasActiveFilters ? "white" : "none"}
         />
       </TouchableOpacity>
 
-      {/* FILTER BOTTOM SHEET */}
       <FilterSheet
-        visible={isFilterVisible}
-        onClose={() => setIsFilterVisible(false)}
         availableYears={availableYears}
         selectedYear={tempYear}
         setSelectedYear={setTempYear}
-        selectedMonth={tempMonth}
-        setSelectedMonth={setTempMonth}
         selectedType={tempType}
         setSelectedType={setTempType}
         onApply={applyFilters}
+        ref={bottomSheetModalRef}
       />
     </SafeAreaView>
   );

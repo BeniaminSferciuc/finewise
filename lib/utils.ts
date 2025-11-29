@@ -4,13 +4,11 @@ import { twMerge } from "tailwind-merge";
 import { TransactionSection, TransactionWithCategory } from "./types";
 
 import {
-  endOfMonth,
   endOfYear,
   format,
   isToday,
   isYesterday,
   parseISO,
-  startOfMonth,
   startOfYear,
 } from "date-fns";
 
@@ -38,14 +36,9 @@ export const groupTransactionsByDate = (
     });
 };
 
-export const getDateRange = (year: number, monthIndex: number | null) => {
-  const date = new Date(year, monthIndex ?? 0, 1);
-  if (monthIndex !== null) {
-    return {
-      start: format(startOfMonth(date), "yyyy-MM-dd"),
-      end: format(endOfMonth(date), "yyyy-MM-dd"),
-    };
-  }
+export const getDateRange = (year: number) => {
+  const date = new Date(year, 0, 1);
+
   return {
     start: format(startOfYear(date), "yyyy-MM-dd"),
     end: format(endOfYear(date), "yyyy-MM-dd"),
@@ -60,4 +53,9 @@ export const formatDate = (date: Date) => {
     day: "numeric",
   });
   return isToday ? `Azi, ${dateString}` : dateString;
+};
+
+export const firstLetterUppercase = (str: string) => {
+  if (str.length === 0) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1);
 };

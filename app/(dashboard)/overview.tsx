@@ -16,13 +16,7 @@ import {
   Wallet,
 } from "lucide-react-native";
 import React from "react";
-import {
-  Dimensions,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width } = Dimensions.get("window");
@@ -106,12 +100,9 @@ export default function HomeScreen() {
                 Hello, {session?.user.name} 👋
               </Text>
             </View>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => router.push("/settings")}
-            >
+            <Pressable onPress={() => router.push("/settings")}>
               <Settings color="gray" />
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           {/* 2. CAROUSEL CARDS */}
@@ -292,20 +283,17 @@ export default function HomeScreen() {
               <Text className="text-lg font-bold text-black">
                 Recent Activity
               </Text>
-              <TouchableOpacity onPress={() => router.push("/transactions")}>
+              <Pressable onPress={() => router.push("/transactions")}>
                 <Text className="text-sm font-medium text-blue-600">
                   See All
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
 
             <View className="bg-white rounded-[20px] overflow-hidden shadow-sm shadow-gray-100">
               {RECENT_TXNS.map((txn, index) => (
                 <View key={txn.id}>
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    className="flex-row items-center p-4"
-                  >
+                  <Pressable className="flex-row items-center p-4">
                     <View
                       className={`w-10 h-10 rounded-full items-center justify-center mr-4 ${
                         txn.amount > 0 ? "bg-green-100" : "bg-gray-100"
@@ -335,7 +323,7 @@ export default function HomeScreen() {
                       {txn.amount > 0 ? "+" : ""}
                       {txn.amount.toFixed(2)}
                     </Text>
-                  </TouchableOpacity>
+                  </Pressable>
                   {index < RECENT_TXNS.length - 1 && (
                     <View className="h-[1px] bg-gray-100 ml-[68px]" />
                   )}
@@ -407,33 +395,25 @@ export default function HomeScreen() {
                 ))}
               </View>
 
-              <TouchableOpacity className="items-center pt-4 mt-6 border-t border-gray-100">
+              <Pressable className="items-center pt-4 mt-6 border-t border-gray-100">
                 <Text className="text-sm font-semibold text-blue-600">
                   Show Full Report
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
         </ScrollView>
       </SafeAreaView>
 
-      {/* 🔥 FLOATING ACTION BUTTON (FAB) 
-         Acesta este plasat în afara SafeAreaView/ScrollView, 
-         direct în containerul principal.
-      */}
-      <TouchableOpacity
+      <Pressable
         onPress={() => router.push("/add-transaction")}
-        activeOpacity={0.8}
-        className="absolute items-center justify-center rounded-full shadow-xl right-6 bottom-4 shadow-black/30"
+        className="absolute items-center justify-center rounded-full shadow-xl right-6 bottom-4 shadow-black/30 size-16"
         style={{
           backgroundColor: THEME_COLOR,
-          width: 64, // ~Aceeași înălțime cu tab-bar-ul custom
-          height: 64,
-          elevation: 8, // Umbră pentru Android
         }}
       >
-        <Plus size={32} color="white" strokeWidth={2.5} />
-      </TouchableOpacity>
+        <Plus size={24} color="white" strokeWidth={2.5} />
+      </Pressable>
     </View>
   );
 }
@@ -453,16 +433,12 @@ const ActionButton = ({
   iconColor = "white",
   onPress,
 }: ActionButtonProps) => (
-  <TouchableOpacity
-    onPress={onPress}
-    className="items-center justify-center gap-2"
-    activeOpacity={0.8}
-  >
+  <Pressable onPress={onPress} className="items-center justify-center gap-2">
     <View
       className={`w-16 h-16 rounded-full items-center justify-center ${color}`}
     >
       <Icon size={26} color={iconColor} strokeWidth={1.5} />
     </View>
     <Text className="text-xs font-medium text-gray-600">{label}</Text>
-  </TouchableOpacity>
+  </Pressable>
 );

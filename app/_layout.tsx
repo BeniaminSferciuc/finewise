@@ -10,9 +10,11 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Redirect, Stack, useSegments } from "expo-router";
 
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { setCustomText } from "react-native-global-props";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "../global.css";
 
 export default function Layout() {
@@ -56,20 +58,24 @@ export default function Layout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SafeAreaProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(dashboard)" />
-          <Stack.Screen
-            name="add-transaction"
-            options={{
-              presentation: "modal",
-              animation: "slide_from_bottom",
-            }}
-          />
-          <Stack.Screen name="index" />
-          <Stack.Screen name="settings" options={{ title: "Settings" }} />
-        </Stack>
-      </SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <BottomSheetModalProvider>
+          <SafeAreaProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="(dashboard)" />
+              <Stack.Screen
+                name="add-transaction"
+                options={{
+                  presentation: "modal",
+                  animation: "slide_from_bottom",
+                }}
+              />
+              <Stack.Screen name="index" />
+              <Stack.Screen name="settings" options={{ title: "Settings" }} />
+            </Stack>
+          </SafeAreaProvider>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
     </QueryClientProvider>
   );
 }

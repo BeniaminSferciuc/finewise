@@ -17,6 +17,7 @@ import {
 import React, { useState } from "react";
 import {
   Alert,
+  Pressable,
   ScrollView,
   Switch,
   Text,
@@ -57,14 +58,14 @@ const Settings = () => {
   return (
     <SafeAreaView className="flex-1 bg-neutral-100" edges={["top"]}>
       <View className="flex-row items-center px-5 pt-4">
-        <TouchableOpacity
+        <Pressable
           onPress={() => router.back()}
-          className="absolute left-5 top-7"
+          className="absolute left-5 top-6"
         >
-          <View className="items-center justify-center p-2 bg-white border rounded-full border-neutral-200 size-11">
-            <ChevronLeft size={24} style={{ marginLeft: -2 }} />
+          <View className="items-center justify-center p-2 bg-white rounded-full size-12 border border-neutral-200/75">
+            <ChevronLeft size={28} style={{ marginLeft: -2 }} />
           </View>
-        </TouchableOpacity>
+        </Pressable>
         <View className="flex-1 px-5 pb-4 mt-4">
           <Text className="text-2xl font-bold tracking-tight text-center text-black">
             Settings
